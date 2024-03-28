@@ -5,9 +5,12 @@ name = "pypi"
 
 [packages]
 django = "*"
-django-heroku = "*"
 gunicorn = "*"
+<<<<<<< HEAD
 validate-email = "*"
+=======
+django-on-heroku = "*"
+>>>>>>> 5ac849e6088f098590f85fb466d8cf236a54ef3c
 
 [dev-packages]
 

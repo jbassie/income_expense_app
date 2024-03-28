@@ -33,9 +33,8 @@ class EmailValidationView(View):
 
         if not validate_email(email):
             return JsonResponse({'email_error': 'Email is Invalid'}, status=400)
-        return JsonResponse({'email_valid': True})
 
         if User.objects.filter(email=email).exists():
             return JsonResponse({'email_error': 'Sorry email name already in use'}, status=409)
-        return JsonResponse({'email': True})   
+        return JsonResponse({'email_valid': True})   
         

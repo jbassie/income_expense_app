@@ -4,15 +4,18 @@ const emailField=document.querySelector('#emailField');
 const emailfeedBackArea=document.querySelector('.emailfeedBackArea');
 const usernameSuccessOutput=document.querySelector('.usernameSuccessOutput');
 const showPasswordToggle=document.querySelector('.showPasswordToggle');
-const passwordField = document.querySelector('.passwordField');
+const passwordField = document.querySelector('#passwordField');
 
 const handleToggleInput=(e)=>{
     if(showPasswordToggle.textContent=='SHOW'){
         showPasswordToggle.textContent="HIDE";
+
+      passwordField.setAttribute("type", "text");
+
     }
     else{
         showPasswordToggle.textContent = "SHOW";
-
+        passwordField.setAttribute("type", "password");
     }
 };
 

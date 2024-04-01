@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 import json
 from django.http import JsonResponse
@@ -91,25 +91,37 @@ class EmailValidationView(View):
 
 class LoginView(View):
     def get(self, request):
-        return render(request, 'authentication/login.hmtl')
+        return render(request, 'authentication/login.html')
     
     def post(self, request):
-        data= request.POST['username']
+        username = request.POST['username']
         password=request.POST['password']
 
         if username and password:
             user =auth.authenticate(username=username, password=password)
 
-            if user.is_active:
-                auth.login(request, user)
-                messages.success(request, 'Welcome ,' + user.username +' you are now logged in')
-            messages.error(request, "Account is not active please check your email")
-            return render(request, 'authentication/login')
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    messages.success(request, 'Welcome ,' + user.username +' you are now logged in')
+                    return redirect('expenses')
+
+                messages.error(request, "Account is not active please check your email")
+                return render(request, 'authentication/login.html')
+            messages.error(
+                request, 'Invalid Credentails, try again'
+            )
+            return render(request, 'authentication/login.html')
         messages.error(
-            request, 'Invalid Credentails, try again'
+            request, "Please fill all fields"
         )
         return render(request, 'authentication/login.html')
-        
+
+class LogOutView(View):
+    def post(self, request):
+        auth.logout(request)
+        messages.success(request, "You have been logged Out")
+        return redirect('login')
 
 # class VerificationView(View):
 #     def get(self, request, uidb64, token):

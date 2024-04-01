@@ -4,7 +4,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from validate_email import validate_email
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import EmailMessage
 
@@ -35,7 +35,7 @@ class RegistrationView(View):
                 
                 user= User.objects.create_user(username=username, email=email)
                 user.set_password(password)
-                user.is_active = False
+                #  user.is_active = False
                 user.save()
                 
                 email_body = 'Test body'
@@ -88,6 +88,28 @@ class EmailValidationView(View):
             return JsonResponse({'email_error': 'Sorry email name already in use'}, status=409)
         return JsonResponse({'email_valid': True})   
 
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'authentication/login.hmtl')
+    
+    def post(self, request):
+        data= request.POST['username']
+        password=request.POST['password']
+
+        if username and password:
+            user =auth.authenticate(username=username, password=password)
+
+            if user.is_active:
+                auth.login(request, user)
+                messages.success(request, 'Welcome ,' + user.username +' you are now logged in')
+            messages.error(request, "Account is not active please check your email")
+            return render(request, 'authentication/login')
+        messages.error(
+            request, 'Invalid Credentails, try again'
+        )
+        return render(request, 'authentication/login.html')
+        
 
 # class VerificationView(View):
 #     def get(self, request, uidb64, token):

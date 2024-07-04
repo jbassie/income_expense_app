@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
 
@@ -19,6 +21,13 @@
     </div>
 
     <div class="container">
+        <div class="row">
+            <div class="col-md-7"></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" id="SearchField">
+            </div>
+        </div>
         {% if expenses.count %}
         <table class="table table-stripped table-hover">
             <thead>
@@ -71,6 +80,8 @@
     
 </div>
 </div>
+
+<script src={% static "js/searchExpenses.js" %}>
 {% endif %}
 {% include "partials/_messages.html" %}
 {% endblock content %}

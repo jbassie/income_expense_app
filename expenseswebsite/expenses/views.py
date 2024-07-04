@@ -4,13 +4,22 @@ from .models import Category, Expense
 from django.contrib import messages
 from django.core.paginator import Paginator
 import json
+from django.http import JsonResponse
 
 def search_expenses(request):
     if request.method == 'POST':
         search_str = json.loads(request.body).get('searchText')
+        expenses = Expense.objects.filter(
+            amount__istartswith=search_str, owner=request.user) | Expense.objects.filter(
+            date__istartswith=search_str, owner=request.user) | Expense.objects.filter(
+            description__icontains=search_str, owner=request.user) | Expense.objects.filter(
+            category__icontains =search_str, owner=request.user)
 
+        data = expenses.values()
 
-        expenses = Expense.filter(amount__starts_with=search_str)
+        return JsonResponse(list(data), safe=False)
+                     
+
 
 # Create your views here.
 @login_required(login_url='/authentication/login')

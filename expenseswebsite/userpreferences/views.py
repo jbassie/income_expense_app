@@ -1,9 +1,10 @@
-from django.shortcuts import render
-import os
-import json
 from django.conf import settings
 from .models import UserPreference
 from django.contrib import messages
+from django.shortcuts import render
+import os
+import json
+
 
 # Create your views here.
 def index(request):

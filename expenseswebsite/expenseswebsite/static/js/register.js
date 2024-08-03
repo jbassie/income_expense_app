@@ -56,7 +56,6 @@ emailField.addEventListener("keyup", (e) => {
 
 
 usernameField.addEventListener("keyup", (e) => {
-    console.log('777777', 777777);
     const usernameVal = e.target.value;
     usernameSuccessOutput.style.display="block";
 
